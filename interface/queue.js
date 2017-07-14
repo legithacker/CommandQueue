@@ -35,7 +35,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Elementos da previsão dos tempos de viagem de todas unidades.
-     * 
+     *
      * @type {Object}
      */
     var $unitTravelTimes = {
@@ -46,7 +46,7 @@ define('TWOverflow/Queue/interface', [
     /**
      * Object da aldeia origem (Obtido ao adicionar as coordendas
      * em "Adicionar comando").
-     * 
+     *
      * @type {Object|Null}
      */
     var originVillage = null
@@ -54,42 +54,42 @@ define('TWOverflow/Queue/interface', [
     /**
      * Object da aldeia alvo (Obtido ao adicionar as coordendas
      * em "Adicionar comando").
-     * 
+     *
      * @type {Object|Null}
      */
     var targetVillage = null
 
     /**
      * Armazena o elemento com a contagem regressiva de todos os comandos em espera.
-     * 
+     *
      * @type {Object}
      */
     var countDownElements = {}
-    
+
     /**
      * Dados do jogador
      *
      * @type {Object}
      */
     var $player
-    
+
     /**
      * Dados do jogo.
-     * 
+     *
      * @type {Object}
      */
-    var $gameData = $model.getGameData()
-    
+    var $gameData = modelDataService.getGameData()
+
     /**
      * Formato das datas usadas nos registros.
-     * 
+     *
      * @type {String}
      */
     var dateFormat = 'HH:mm:ss dd/MM/yyyy'
-    
+
     /**
      * Armazena se as entradas das coordenadas e data de chegada são validas.
-     * 
+     *
      * @type {Object}
      */
     var validInput = {
@@ -146,24 +146,24 @@ define('TWOverflow/Queue/interface', [
         },
         textMatch: ''
     }
-    
+
     /**
      * Nome de todos oficiais.
-     * 
+     *
      * @type {Array}
      */
     var officerNames = $gameData.getOrderedOfficerNames()
-    
+
     /**
      * Nome de todas unidades.
-     * 
+     *
      * @type {Array}
      */
     var unitNames = $gameData.getOrderedUnitNames()
 
     /**
      * Nome de todos edificios.
-     * 
+     *
      * @type {Array}
      */
     var buildingNames
@@ -171,7 +171,7 @@ define('TWOverflow/Queue/interface', [
     /**
      * Nome de uma unidade de cada velocidade disponivel no jogo.
      * Usados para gerar os tempos de viagem.
-     * 
+     *
      * @type {Array}
      */
     var unitsBySpeed = [
@@ -187,42 +187,42 @@ define('TWOverflow/Queue/interface', [
     /**
      * Tipo de comando que será adicionado a lista de espera,
      * setado quando um dos botões de adição é pressionado.
-     * 
+     *
      * @type {String}
      */
     var commandType
 
     /**
      * Tipo de data usada para configurar o comando (arrive|out)
-     * 
+     *
      * @type {String}
      */
     var dateType = 'arrive'
 
     /**
      * Aldeia atualmente selecionada no mapa.
-     * 
+     *
      * @type {Array|Boolean} Coordenadas da aldeia [x, y]
      */
     var mapSelectedVillage = false
 
     /**
      * Diferença entre o timezone local e do servidor.
-     * 
+     *
      * @type {Number}
      */
     var timeOffset
 
     /**
      * Obtem a diferença entre o timezone local e do servidor.
-     * 
+     *
      * @type {Number}
      */
     var getTimeOffset = function () {
         var localDate = $timeHelper.gameDate()
         var localOffset = localDate.getTimezoneOffset() * 1000 * 60
-        var serverOffset = $root.GAME_TIME_OFFSET
-        
+        var serverOffset = rootScope.GAME_TIME_OFFSET
+
         return localOffset + serverOffset
     }
 
@@ -362,7 +362,7 @@ define('TWOverflow/Queue/interface', [
                 units[unit] = 1
 
                 var travelTime = Queue.getTravelTime(originVillage, targetVillage, units, type, officers)
-                var readable = readableMillisecondsFilter(travelTime)
+                var readable = $filter('readableMillisecondsFilter')(travelTime)
 
                 if (dateType === 'arrive') {
                     if (validInput.date) {
@@ -392,7 +392,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Altera a cor do texto do input
-     * 
+     *
      * @param  {jqLite} $elem
      */
     var colorRed = function ($elem) {
@@ -401,7 +401,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Restaura a cor do texto do input
-     * 
+     *
      * @param  {jqLite} $elem
      */
     var colorNeutral = function ($elem) {
@@ -410,7 +410,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Loop em todas entradas de valores para adicionar um comadno.
-     * 
+     *
      * @param  {Function} callback
      */
     var eachInput = function (callback) {
@@ -423,7 +423,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Adiciona um comando de acordo com os dados informados.
-     * 
+     *
      * @param {String} type Tipo de comando (attack, support ou relocate)
      */
     var addCommand = function (type) {
@@ -458,7 +458,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Remove um comando da seção especificada.
-     * 
+     *
      * @param  {Object} command - Comando que será removido.
      * @param  {String} section - Sessão em que o comando se encontra.
      */
@@ -479,7 +479,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Adiciona um comando na seção.
-     * 
+     *
      * @param {Object} command - Dados do comando que será adicionado na interface.
      * @param {String} section - Seção em que o comandos erá adicionado.
      */
@@ -554,7 +554,8 @@ define('TWOverflow/Queue/interface', [
                 var timeLeft = command.sendTime - now
 
                 if (timeLeft > 0) {
-                    countDownElements[commandId].innerHTML = readableMillisecondsFilter(timeLeft, false, true)
+                    countDownElements[commandId].innerHTML =
+                        $filter('readableMillisecondsFilter')(timeLeft, false, true)
                 }
             }
         }, 1000)
@@ -562,7 +563,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Armazena o elemento da contagem regressiva de um comando.
-     * 
+     *
      * @param {Element} $container - Elemento da contagem regressiva.
      * @param {String} commandId - Identificação unica do comando.
      */
@@ -624,7 +625,7 @@ define('TWOverflow/Queue/interface', [
     /**
      * Mostra ou oculpa a mensagem "vazio" de acordo com
      * a quantidade de comandos presetes na seção.
-     * 
+     *
      * @param  {String} section
      */
     var toggleEmptyMessage = function (section) {
@@ -665,7 +666,7 @@ define('TWOverflow/Queue/interface', [
         })
 
         $window.find('a.addSelected').on('click', function () {
-            var coords = $model.getSelectedVillage().getPosition()
+            var coords = modelDataService.getSelectedVillage().getPosition()
 
             $origin.val(coords.x + '|' + coords.y)
             $origin.trigger('input')
@@ -755,15 +756,15 @@ define('TWOverflow/Queue/interface', [
             }
         })
 
-        $root.$on($eventType.SHOW_CONTEXT_MENU, function (event, menu) {
+        rootScope.$on(eventTypeProvider.SHOW_CONTEXT_MENU, function (event, menu) {
             mapSelectedVillage = [menu.data.x, menu.data.y]
         })
 
-        $root.$on($eventType.DESTROY_CONTEXT_MENU, function () {
+        rootScope.$on(eventTypeProvider.DESTROY_CONTEXT_MENU, function () {
             mapSelectedVillage = false
         })
 
-        $root.$on($eventType.VILLAGE_SELECTED_CHANGED, function () {
+        rootScope.$on(eventTypeProvider.VILLAGE_SELECTED_CHANGED, function () {
             applyCommandFilters()
         })
     }
@@ -840,7 +841,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Gera um texto de notificação com as traduções.
-     * 
+     *
      * @param  {String} key
      * @param  {String} key2
      * @param  {String=} prefix
@@ -856,7 +857,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Verifica se o tempo de envio é menor que o tempo atual do jogo.
-     * 
+     *
      * @param  {Number}  time
      * @return {Boolean}
      */
@@ -870,7 +871,7 @@ define('TWOverflow/Queue/interface', [
 
     /**
      * Obtem todos oficiais ativados no formulário para adicioanr comandos.
-     * 
+     *
      * @return {Object} Oficiais ativos
      */
     var getOfficers = function () {
@@ -905,7 +906,7 @@ define('TWOverflow/Queue/interface', [
     function QueueInterface () {
         timeOffset = getTimeOffset()
         buildingNames = Object.keys($gameData.getBuildings())
-        $player = $model.getSelectedCharacter()
+        $player = modelDataService.getSelectedCharacter()
 
         // Valores a serem substituidos no template da janela
         var replaces = {

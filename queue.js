@@ -23,42 +23,42 @@ define('TWOverflow/Queue', [
     /**
      * Armazena todos os eventos adicionados para serem
      * chamados pelo .trigger()
-     * 
+     *
      * @type {Object}
      */
     var eventListeners = {}
 
     /**
      * Lista de comandos em espera (ordenado por tempo restante).
-     * 
+     *
      * @type {Array}
      */
     var waitingCommands = []
 
     /**
      * Lista de comandos em espera.
-     * 
+     *
      * @type {Object}
      */
     var waitingCommandsObject = {}
 
     /**
      * Lista de comandos que já foram enviados.
-     * 
+     *
      * @type {Array}
      */
     var sendedCommands = []
 
     /**
      * Lista de comandos que se expiraram.
-     * 
+     *
      * @type {Array}
      */
     var expiredCommands = []
 
     /**
      * Indica se o CommandQueue está ativado.
-     * 
+     *
      * @type {Boolean}
      */
     var running = false
@@ -84,7 +84,7 @@ define('TWOverflow/Queue', [
      */
     var commandFilters = {
         selectedVillage: function (command) {
-            return command.origin.id === $model.getSelectedVillage().getId()
+            return command.origin.id === modelDataService.getSelectedVillage().getId()
         },
         barbarianTarget: function (command) {
             return !command.target.character_id
@@ -132,28 +132,28 @@ define('TWOverflow/Queue', [
 
     /**
      * Diferença entre o timezone local e do servidor.
-     * 
+     *
      * @type {Number}
      */
     var timeOffset
 
     /**
      * Obtem a diferença entre o timezone local e do servidor.
-     * 
+     *
      * @type {Number}
      */
     var getTimeOffset = function () {
         var localDate = $timeHelper.gameDate()
         var localOffset = localDate.getTimezoneOffset() * 1000 * 60
-        var serverOffset = $root.GAME_TIME_OFFSET
-        
+        var serverOffset = rootScope.GAME_TIME_OFFSET
+
         return localOffset + serverOffset
     }
 
     /**
      * Gera um prefix com o mundo atual para que
      * cada mundo tenha sua própria lista de comandos.
-     * 
+     *
      * @param  {String} id
      * @return {String}
      */
@@ -166,10 +166,10 @@ define('TWOverflow/Queue', [
     // assim evitando que utils que precisem de dados
     // de outros modulos tipo $timeHelper não precisem
     // ser definidos dentro de cada modulo.
-    
+
     /**
      * Verifica se tem um intervalo entre a horario do envio e o horario do jogo.
-     * 
+     *
      * @param  {Number} - sendTime
      * @return {Boolean}
      */
@@ -183,7 +183,7 @@ define('TWOverflow/Queue', [
      * quando os comandos são enviados manualmente, então
      * caso seja enviado as unidades com valores zero poderia
      * ser uma forma de detectar os comandos automáticos.
-     * 
+     *
      * @param  {Object} units - Unidades a serem analisadas
      * @return {Object} Objeto sem nenhum valor zero
      */
@@ -212,7 +212,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Adiciona um comando a lista ordenada de comandos em espera.
-     * 
+     *
      * @param  {Object} command - Comando a ser adicionado
      */
     var pushWaitingCommand = function (command) {
@@ -221,7 +221,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Adiciona um comando a lista de comandos em espera.
-     * 
+     *
      * @param  {Object} command - Comando a ser adicionado
      */
     var pushCommandObject = function (command) {
@@ -230,7 +230,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Adiciona um comando a lista de comandos enviados.
-     * 
+     *
      * @param  {Object} command - Comando a ser adicionado
      */
     var pushSendedCommand = function (command) {
@@ -239,7 +239,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Adiciona um comando a lista de comandos expirados.
-     * 
+     *
      * @param  {Object} command - Comando a ser adicionado
      */
     var pushExpiredCommand = function (command) {
@@ -296,11 +296,11 @@ define('TWOverflow/Queue', [
      *    que se encontram na aldeia.
      * - Números negativos são convertidos núrero total de unidades
      *    menos a quantidade específicada.
-     * 
+     *
      * @param  {Object} command - Dados do comando
      */
     var parseDynamicUnits = function (command) {
-        var playerVillages = $model.getVillages()
+        var playerVillages = modelDataService.getVillages()
         var village = playerVillages[command.origin.id]
 
         if (!village) {
@@ -365,14 +365,14 @@ define('TWOverflow/Queue', [
 
     /**
      * Indica se o CommandQueue já foi inicializado.
-     * 
+     *
      * @type {Boolean}
      */
     Queue.initialized = false
 
     /**
      * Versão atual do CommandQueue
-     * 
+     *
      * @type {String}
      */
     Queue.version = '___queueVersion'
@@ -383,9 +383,9 @@ define('TWOverflow/Queue', [
      */
     Queue.init = function () {
         Locale.create('queue', ___langQueue, 'en')
-        
+
         timeOffset = getTimeOffset
-        $player = $model.getSelectedCharacter()
+        $player = modelDataService.getSelectedCharacter()
 
         Queue.initialized = true
 
@@ -404,7 +404,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Adiciona um evento.
-     * 
+     *
      * @param  {String} event - Identificação do evento.
      * @param  {Function} handler - Função executado quando o evento é disparado.
      */
@@ -431,7 +431,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Envia um comando.
-     * 
+     *
      * @param {Object} command - Dados do comando que será enviado.
      */
     Queue.sendCommand = function (command) {
@@ -441,7 +441,7 @@ define('TWOverflow/Queue', [
             return Queue.trigger('error', [Locale('queue', 'error.noUnitsEnough')])
         }
 
-        $socket.emit($route.SEND_CUSTOM_ARMY, {
+        socketService.emit(routeProvider.SEND_CUSTOM_ARMY, {
             start_village: command.origin.id,
             target_village: command.target.id,
             type: command.type,
@@ -460,7 +460,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Expira um comando.
-     * 
+     *
      * @param {Object} command - Dados do comando que será expirado.
      */
     Queue.expireCommand = function (command) {
@@ -472,7 +472,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Adiciona um comando a lista de espera.
-     * 
+     *
      * @param {Object} command - Dados do comando que será adicionado.
      * @param {String} command.origin - Coordenadas da aldeia de origem.
      * @param {String} command.target - Coordenadas da aldeia alvo.
@@ -525,7 +525,7 @@ define('TWOverflow/Queue', [
             getOriginVillage,
             getTargetVillage
         ])
-        
+
         loadVillagesData.then(function (villages) {
             command.origin = villages[0]
             command.target = villages[1]
@@ -577,7 +577,7 @@ define('TWOverflow/Queue', [
 
             Queue.trigger('add', [command])
         })
-        
+
         loadVillagesData.catch(function (error) {
             Queue.trigger('error', [Locale('queue', error)])
         })
@@ -585,7 +585,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Remove um comando da lista de espera.
-     * 
+     *
      * @param  {Object} command - Dados do comando a ser removido.
      * @param  {String} reason - Razão do comando ter sido removido. (expired/removed)
      */
@@ -638,7 +638,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Verifica se o CommandQueue está ativado.
-     * 
+     *
      * @return {Boolean}
      */
     Queue.isRunning = function () {
@@ -647,7 +647,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Obtem lista de comandos ordenados na lista de espera.
-     * 
+     *
      * @return {Array}
      */
     Queue.getWaitingCommands = function () {
@@ -656,7 +656,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Obtem lista de comandos em espera.
-     * 
+     *
      * @return {Object}
      */
     Queue.getWaitingCommandsObject = function () {
@@ -665,7 +665,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Obtem lista de comandos enviados;
-     * 
+     *
      * @return {Array}
      */
     Queue.getSendedCommands = function () {
@@ -674,7 +674,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Obtem lista de comandos expirados;
-     * 
+     *
      * @return {Array}
      */
     Queue.getExpiredCommands = function () {
@@ -683,13 +683,13 @@ define('TWOverflow/Queue', [
 
     /**
      * Calcula o tempo de viagem de uma aldeia a outra
-     * 
+     *
      * @param {Object} origin - Objeto da aldeia origem.
      * @param {Object} target - Objeto da aldeia alvo.
      * @param {Object} units - Exercito usado no ataque como referência para calcular o tempo.
      * @param {String} type - Tipo de comando (attack,support,relocate)
      * @param {Object} officers - Oficiais usados no comando (usados para efeitos)
-     * 
+     *
      * @return {Number} Tempo de viagem
      */
     Queue.getTravelTime = function (origin, target, units, type, officers) {
@@ -721,7 +721,7 @@ define('TWOverflow/Queue', [
             officers: angular.copy(officers)
         }
 
-        var travelTime = $armyService.calculateTravelTime(army, {
+        var travelTime = armyService.calculateTravelTime(army, {
             barbarian: targetIsBarbarian,
             ownTribe: targetIsSameTribe,
             officers: officers,
@@ -730,7 +730,7 @@ define('TWOverflow/Queue', [
 
         var distance = $math.actualDistance(origin, target)
 
-        var totalTravelTime = $armyService.getTravelTimeForDistance(
+        var totalTravelTime = armyService.getTravelTimeForDistance(
             army,
             travelTime,
             distance,
@@ -742,7 +742,7 @@ define('TWOverflow/Queue', [
 
     /**
      * Carrega os dados de uma aldeia pelas coordenadas.
-     * 
+     *
      * @param  {String} coords - Coordendas da aldeia.
      * @param  {Function} callback
      */
