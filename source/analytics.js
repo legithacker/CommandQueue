@@ -4,6 +4,14 @@ define('TWOverflow/Queue/analytics', [
     Queue.analytics = function () {
         ga('create', '__queue_analytics', 'auto', '__queue_name')
 
+        var player = modelDataService.getPlayer()
+        var character = player.getSelectedCharacter()
+        var data = []
+
+        data.push(character.getName())
+        data.push(character.getId())
+        data.push(character.getWorldId())
+
         Queue.bind('start', function () {
             ga('__queue_name.send', 'event', 'behavior', 'start')
         })
@@ -17,15 +25,15 @@ define('TWOverflow/Queue/analytics', [
         })
 
         Queue.bind('send', function (command) {
-            ga('__queue_name.send', 'event', 'commands', 'send', command.type)
+            ga('__queue_name.send', 'event', 'commands', command.type, data.join('~'))
         })
 
         Queue.bind('add', function () {
-            ga('__queue_name.send', 'event', 'behavior', 'add')
+            ga('__queue_name.send', 'event', 'behavior', 'add', data.join('~'))
         })
 
         Queue.bind('expired', function () {
-            ga('__queue_name.send', 'event', 'commands', 'expired')
+            ga('__queue_name.send', 'event', 'commands', 'expired', data.join('~'))
         })
 
         Queue.bind('remove', function (removed, command, manualRemove) {
