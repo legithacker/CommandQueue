@@ -495,7 +495,7 @@ define('TWOverflow/Queue/interface', [
         var sendTime = formatDate(command.sendTime)
         var hasOfficers = !!Object.keys(command.officers).length
 
-        $command.innerHTML = ejs.render('___htmlQueueCommand', {
+        $command.innerHTML = ejs.render('__queue_html_command', {
             sendTime: sendTime,
             type: command.type,
             arriveTime: arriveTime,
@@ -919,9 +919,9 @@ define('TWOverflow/Queue/interface', [
 
         ui = new Interface('CommandQueue', {
             activeTab: 'info',
-            template: '___htmlQueueWindow',
+            template: '__queue_html_window',
             replaces: replaces,
-            css: '___cssQueue'
+            css: '__queue_css_style'
         })
 
         opener = new FrontButton('Queue')

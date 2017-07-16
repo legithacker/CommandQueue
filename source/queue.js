@@ -375,14 +375,14 @@ define('TWOverflow/Queue', [
      *
      * @type {String}
      */
-    Queue.version = '___queueVersion'
+    Queue.version = '__queue_version'
 
     /**
      * Inicializa o CommandQueue.
      * Adiciona/expira comandos salvos em execuções anteriores.
      */
     Queue.init = function () {
-        Locale.create('queue', ___langQueue, 'en')
+        Locale.create('queue', __queue_locale, 'en')
 
         timeOffset = getTimeOffset
         $player = modelDataService.getSelectedCharacter()
