@@ -353,7 +353,7 @@ define('TWOverflow/Queue', [
                     return true
                 }
             })
-        }, CHECKS_PER_SECOND / 1000)
+        }, 1000 / CHECKS_PER_SECOND)
     }
 
     /**
@@ -542,8 +542,6 @@ define('TWOverflow/Queue', [
                 command.sendTime = inputTime
                 command.arriveTime = inputTime + command.travelTime
             }
-
-            console.log(new Date(command.arriveTime))
 
             if (isTimeToSend(command.sendTime)) {
                 return Queue.trigger('error', [Locale('queue', 'error.alreadySent', {
