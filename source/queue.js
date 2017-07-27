@@ -384,7 +384,7 @@ define('TWOverflow/Queue', [
     Queue.init = function () {
         Locale.create('queue', __queue_locale, 'en')
 
-        timeOffset = getTimeOffset
+        timeOffset = getTimeOffset()
         $player = modelDataService.getSelectedCharacter()
 
         Queue.initialized = true
