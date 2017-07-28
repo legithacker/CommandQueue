@@ -543,14 +543,6 @@ define('TWOverflow/Queue/interface', [
 
             for (var commandId in countDownElements) {
                 var command = waitingCommands[commandId]
-
-                // TODO
-                // remover quando não houver mais erros
-                if (!command) {
-                    console.error('COMANDO NÃO EXISTE MAIS!', commandId)
-                    continue
-                }
-
                 var timeLeft = command.sendTime - now
 
                 if (timeLeft > 0) {
