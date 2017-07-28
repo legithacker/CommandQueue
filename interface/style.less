@@ -130,12 +130,18 @@
             margin-left: 262px;
 
             input {
-                height: 30px;
-                margin-top: 4px;
+                height: 36px;
+                margin-top: 1px;
                 width: 100%;
+                text-align: left;
+                padding: 0 5px;
 
                 &::placeholder {
                     color: white;
+                }
+
+                &:focus::placeholder {
+                    color: transparent;
                 }
             }
         }
