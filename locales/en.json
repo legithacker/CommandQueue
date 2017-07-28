@@ -53,7 +53,7 @@
     "queue.expired":"Expired commands",
     "queue.noneExpired":"No command expired.",
     "queue.remove":"Remove command form list",
-    "queue.filters":"Command Filter",
+    "queue.filters":"Filter commands",
     "filters.selectedVillage":"Show only commands from the selected village",
     "filters.barbarianTarget":"Show only commands with barbarian villages as target",
     "filters.attack":"Show attacks",
