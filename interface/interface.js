@@ -81,13 +81,6 @@ define('TWOverflow/Queue/interface', [
     var $gameData = modelDataService.getGameData()
 
     /**
-     * Formato das datas usadas nos registros.
-     *
-     * @type {String}
-     */
-    var dateFormat = 'HH:mm:ss dd/MM/yyyy'
-
-    /**
      * Armazena se as entradas das coordenadas e data de chegada são validas.
      *
      * @type {Object}
