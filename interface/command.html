@@ -40,7 +40,7 @@
                 <# for (var unit in units) { #>
                     <div class="unit">
                         <# if (unit === "catapult" && type === "attack") { #>
-                            <span class="icon-34x34-unit-<#= unit #> icon"></span><span class="amount"><#= units[unit] #> <span>(<#= locale("queue", "buildings." + catapultTarget) #>)</span></span>
+                            <span class="icon-34x34-unit-<#= unit #> icon"></span><span class="amount"><#= units[unit] #> <span>(<#= locale("common", "buildings." + catapultTarget) #>)</span></span>
                         <# } else { #>
                             <span class="icon-34x34-unit-<#= unit #> icon"></span><span class="amount"><#= units[unit] #></span>
                         <# } #>
