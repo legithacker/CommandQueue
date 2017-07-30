@@ -12,22 +12,22 @@
             <div class="tabs-four-col">
                 <div class="tab" tab="info">
                     <div class="tab-inner">
-                        <div><a href="#" class="btn-icon btn-orange"><#= locale("queue", "general.info") #></a></div>
+                        <div><a href="#" class="btn-icon btn-orange"><#= locale("common", "info") #></a></div>
                     </div>
                 </div>
                 <div class="tab" tab="add">
                     <div class="tab-inner">
-                        <div><a href="#" class="btn-icon btn-orange"><#= locale("queue", "general.add") #></a></div>
+                        <div><a href="#" class="btn-icon btn-orange"><#= locale("common", "add") #></a></div>
                     </div>
                 </div>
                 <div class="tab" tab="queue">
                     <div class="tab-inner">
-                        <div><a href="#" class="btn-icon btn-orange"><#= locale("queue", "general.waiting") #></a></div>
+                        <div><a href="#" class="btn-icon btn-orange"><#= locale("common", "waiting") #></a></div>
                     </div>
                 </div>
                 <div class="tab" tab="log">
                     <div class="tab-inner">
-                        <div><a href="#" class="btn-icon btn-orange"><#= locale("queue", "general.registers") #></a></div>
+                        <div><a href="#" class="btn-icon btn-orange"><#= locale("common", "registers") #></a></div>
                     </div>
                 </div>
             </div>
@@ -179,7 +179,7 @@
                     </table>
                 </div>
 
-                <h5 class="twx-section collapse"><#= locale("queue", "general.units") #></h5>
+                <h5 class="twx-section collapse"><#= locale("common", "units") #></h5>
                 <table class="tbl-border-light tbl-striped">
                     <colgroup>
                         <col width="50%">
@@ -195,7 +195,7 @@
                                 <td class="cell-space-left">
                                     <span class="float-left icon-bg-black icon-44x44-unit-<#= unit #>"></span>
                                     <div class="ff-cell-fix cell-space-44x44">
-                                        <span><#= locale("common", "units." + unit) #></span>
+                                        <span><#= locale("common", unit) #></span>
                                         <input class="unit <#= unit #>" type="text" data-setting="<#= unit #>" placeholder="0">
                                     </div>
                                 </td>
@@ -205,9 +205,9 @@
                                 <select data-setting="catapultTarget">
                                     <# buildings.forEach(function(building, i) { #>
                                         <# if (building === "headquarter") { #>
-                                            <option value="headquarter" selected><#= locale("common", "buildings.headquarter") #></option>
+                                            <option value="headquarter" selected><#= locale("common", "headquarter") #></option>
                                         <# } else { #>
-                                            <option value="<#= building #>"><#= locale("common", "buildings." + building) #></option>
+                                            <option value="<#= building #>"><#= locale("common", building) #></option>
                                         <# } #>
                                     <# }) #>
                                 </select>
@@ -216,7 +216,7 @@
                     </tbody>
                 </table>
 
-                <h5 class="twx-section collapse"><#= locale("queue", "general.officers") #></h5>
+                <h5 class="twx-section collapse"><#= locale("common", "officers") #></h5>
                 <table class="tbl-border-light tbl-striped officers">
                     <tbody>
                         <tr>
@@ -291,16 +291,16 @@
                 <a class="btn-orange btn-border clear"><#= locale("queue", "general.clear") #></a>
             </li>
             <li class="twOverflow-button-add">
-                <a class="btn-orange btn-border add" name="attack"><span class="icon-26x26-attack-small"></span> <#= locale("queue", "general.attack") #></a>
+                <a class="btn-orange btn-border add" name="attack"><span class="icon-26x26-attack-small"></span> <#= locale("common", "attack") #></a>
             </li>
             <li class="twOverflow-button-add">
-                <a class="btn-orange btn-border add" name="support"><span class="icon-26x26-support"></span> <#= locale("queue", "general.support") #></a>
+                <a class="btn-orange btn-border add" name="support"><span class="icon-26x26-support"></span> <#= locale("common", "support") #></a>
             </li>
             <li class="twOverflow-button-add">
-                <a class="btn-orange btn-border add" name="relocate"><span class="icon-26x26-relocate"></span> <#= locale("queue", "general.relocate") #></a>
+                <a class="btn-orange btn-border add" name="relocate"><span class="icon-26x26-relocate"></span> <#= locale("common", "relocate") #></a>
             </li>
             <li>
-                <a class="btn-green btn-border switch"><#= locale("queue", "general.activate") #></a>
+                <a class="btn-green btn-border switch"><#= locale("common", "activate") #></a>
             </li>
         </ul>
     </footer>

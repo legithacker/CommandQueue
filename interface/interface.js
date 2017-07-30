@@ -917,7 +917,7 @@ define('TWOverflow/Queue/interface', [
             var commands = Queue.getWaitingCommands()
             var sendTime = commands.length
                 ? formatDate(commands[0].sendTime)
-                : Locale('queue', 'general.none')
+                : Locale('common', 'none')
             var text = Locale('queue', 'general.nextCommand') + ': ' + sendTime
 
             opener.updateQuickview(text)
@@ -995,7 +995,7 @@ define('TWOverflow/Queue/interface', [
         Queue.bind('start', function () {
             opener.$elem.removeClass('btn-green').addClass('btn-red')
             $switch.removeClass('btn-green').addClass('btn-red')
-            $switch.html(Locale('queue', 'general.deactivate'))
+            $switch.html(Locale('common', 'deactivate'))
 
             emitNotif('success', genNotifText('title', 'activated'))
         })
@@ -1003,7 +1003,7 @@ define('TWOverflow/Queue/interface', [
         Queue.bind('stop', function () {
             opener.$elem.removeClass('btn-red').addClass('btn-green')
             $switch.removeClass('btn-red').addClass('btn-green')
-            $switch.html(Locale('queue', 'general.activate'))
+            $switch.html(Locale('common', 'activate'))
 
             emitNotif('success', genNotifText('title', 'deactivated'))
         })

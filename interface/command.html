@@ -6,9 +6,9 @@
         <tr>
             <th colspan="2">
                 <# if (type === "attack") { #>
-                    <span class="icon-bg-red icon-26x26-attack" tooltip="<#= locale("queue", "general.attack") #>"></span>
+                    <span class="icon-bg-red icon-26x26-attack" tooltip="<#= locale("common", "attack") #>"></span>
                 <# } else { #>
-                    <span class="icon-bg-blue icon-26x26-support" tooltip="<#= locale("queue", "general.support") #>"></span>
+                    <span class="icon-bg-blue icon-26x26-support" tooltip="<#= locale("common", "support") #>"></span>
                 <# } #>
 
                 <# if (section === "queue") { #>
@@ -27,7 +27,7 @@
             </th>
         </tr>
         <tr>
-            <td><#= locale("queue", "command.villages") #></td>
+            <td><#= locale("common", "villages") #></td>
             <td>
                 <a class="origin"></a>
                 <span class="size-20x20 icon-26x26-<#= type #>"></span>
@@ -35,12 +35,12 @@
             </td>
         </tr>
         <tr>
-            <td><#= locale("queue", "general.units") #></td>
+            <td><#= locale("common", "units") #></td>
             <td class="units">
                 <# for (var unit in units) { #>
                     <div class="unit">
                         <# if (unit === "catapult" && type === "attack") { #>
-                            <span class="icon-34x34-unit-<#= unit #> icon"></span><span class="amount"><#= units[unit] #> <span>(<#= locale("common", "buildings." + catapultTarget) #>)</span></span>
+                            <span class="icon-34x34-unit-<#= unit #> icon"></span><span class="amount"><#= units[unit] #> <span>(<#= locale("common", catapultTarget) #>)</span></span>
                         <# } else { #>
                             <span class="icon-34x34-unit-<#= unit #> icon"></span><span class="amount"><#= units[unit] #></span>
                         <# } #>

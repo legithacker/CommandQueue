@@ -546,7 +546,7 @@ define('TWOverflow/Queue', [
             if (isTimeToSend(command.sendTime)) {
                 return Queue.trigger('error', [Locale('queue', 'error.alreadySent', {
                     date: formatDate(command.sendTime),
-                    type: Locale('queue', command.type)
+                    type: Locale('common', command.type)
                 })])
             }
 
