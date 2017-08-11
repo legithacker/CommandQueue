@@ -966,7 +966,7 @@ define('TWOverflow/Queue/interface', [
             }
 
             removeCommand(command, 'queue')
-            emitNotif('success', genNotifText(command.type, 'removed', 'general'))
+            emitNotif('success', genNotifText(command.type, 'removed'))
         })
 
         // Remove o comando da lista de espera,
@@ -974,14 +974,14 @@ define('TWOverflow/Queue/interface', [
         Queue.bind('expired', function (command) {
             removeCommand(command, 'queue')
             appendCommand(command, 'expired')
-            emitNotif('error', genNotifText(command.type, 'expired', 'general'))
+            emitNotif('error', genNotifText(command.type, 'expired'))
         })
 
         // Adiciona o comando da lista de espera.
         Queue.bind('add', function (command) {
             resetWaitingCommands()
             applyCommandFilters()
-            emitNotif('success', genNotifText(command.type, 'added', 'general'))
+            emitNotif('success', genNotifText(command.type, 'added'))
         })
 
         // Remove o comando da lista de espera,
@@ -989,7 +989,7 @@ define('TWOverflow/Queue/interface', [
         Queue.bind('send', function (command) {
             removeCommand(command, 'queue')
             appendCommand(command, 'sended')
-            emitNotif('success', genNotifText(command.type, 'sended', 'general'))
+            emitNotif('success', genNotifText(command.type, 'sended'))
         })
 
         Queue.bind('start', function () {
